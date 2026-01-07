@@ -1,0 +1,16 @@
+[build]
+  # CI=false evita que CRA falle por warnings en Netlify
+  command = "CI=false yarn build"
+  publish = "build"
+
+[build.environment]
+  # Webpack 4 + Node moderno rompe por OpenSSL; Node 16 suele ser la opción estable
+  NODE_VERSION = "16"
+  # Por si Netlify termina usando Node >=17 igual (o te lo pisa), esto salva el build
+  NODE_OPTIONS = "--openssl-legacy-provider"
+
+# SPA fallback: React Router necesita esto para que /ruta no devuelva 404
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
